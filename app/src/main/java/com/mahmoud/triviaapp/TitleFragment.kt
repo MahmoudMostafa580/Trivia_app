@@ -35,7 +35,7 @@ class TitleFragment : Fragment() {
             view.findNavController()
                 .navigate(TitleFragmentDirections.actionTitleFragmentToGameFragment())
         }
-        setHasOptionsMenu(true)
+
         return binding.root
     }
 
@@ -46,7 +46,7 @@ class TitleFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(
-            item!!,
+            item,
             requireView().findNavController()
         )
                 || super.onOptionsItemSelected(item)
