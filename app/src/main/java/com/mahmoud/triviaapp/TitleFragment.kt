@@ -1,7 +1,6 @@
 package com.example.android.navigation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,7 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.mahmoud.triviaapp.R
@@ -33,7 +32,8 @@ class TitleFragment : Fragment() {
         )
 
         binding.playButton.setOnClickListener { view: View ->
-            Navigation.findNavController(view).navigate(TitleFragmentDirections.actionTitleFragmentToGameFragment())
+            view.findNavController()
+                .navigate(TitleFragmentDirections.actionTitleFragmentToGameFragment())
         }
         setHasOptionsMenu(true)
         return binding.root
@@ -47,7 +47,8 @@ class TitleFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(
             item!!,
-            requireView().findNavController())
+            requireView().findNavController()
+        )
                 || super.onOptionsItemSelected(item)
     }
 
