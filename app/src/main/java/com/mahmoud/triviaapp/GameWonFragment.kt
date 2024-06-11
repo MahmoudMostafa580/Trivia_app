@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.navigation
+package com.mahmoud.triviaapp
 
 import android.content.Intent
 import android.os.Bundle
@@ -51,7 +51,7 @@ class GameWonFragment : Fragment() {
         return binding.root
     }
 
-    fun getShareIntent(): Intent {
+    private fun getShareIntent(): Intent {
         val args = GameWonFragmentArgs.fromBundle(requireArguments())
         return ShareCompat.IntentBuilder(requireActivity())
             .setText(getString(R.string.share_success_text, args.numQuestions, args.numCorrect))
@@ -63,7 +63,7 @@ class GameWonFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.winner_menu, menu)
         if (null == getShareIntent().resolveActivity(requireActivity().packageManager)) {
-            menu.findItem(R.id.share).setVisible(false)
+            menu.findItem(R.id.share).isVisible = false
         }
     }
 
