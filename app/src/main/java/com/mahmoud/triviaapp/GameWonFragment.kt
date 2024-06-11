@@ -16,63 +16,61 @@
 
 package com.example.android.navigation
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.app.ShareCompat
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.app.ShareCompat
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import android.content.pm.ResolveInfo
-import android.content.pm.PackageManager
 import com.mahmoud.triviaapp.R
 import com.mahmoud.triviaapp.databinding.FragmentGameWonBinding
 
 
 class GameWonFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         val binding: FragmentGameWonBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_game_won, container, false)
+            inflater, R.layout.fragment_game_won, container, false
+        )
 
         binding.nextMatchButton.setOnClickListener { view: View ->
-            view.findNavController().navigate(GameWonFragmentDirections.actionGameWonFragmentToGameFragment())
+            view.findNavController()
+                .navigate(GameWonFragmentDirections.actionGameWonFragmentToGameFragment())
         }
-
-        var args = GameWonFragmentArgs.fromBundle(requireArguments())
-        Toast.makeText(context, "NumCorrect: ${args.numCorrect}, NumQuestions: ${args.numQuestions}",
-            Toast.LENGTH_SHORT).show()
-
         setHasOptionsMenu(true)
+
         return binding.root
     }
 
-    fun getShareIntent(): Intent{
-        var args = GameWonFragmentArgs.fromBundle(requireArguments())
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_success_text,
-            args.numQuestions, args.numCorrect))
-
-        return shareIntent
+    fun getShareIntent(): Intent {
+        val args = GameWonFragmentArgs.fromBundle(requireArguments())
+        return ShareCompat.IntentBuilder(requireActivity())
+            .setText(getString(R.string.share_success_text, args.numQuestions, args.numCorrect))
+            .setType("text/plain")
+            .intent
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.winner_menu, menu)
+        if (null == getShareIntent().resolveActivity(requireActivity().packageManager)) {
+            menu.findItem(R.id.share).setVisible(false)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.share -> shareSuccess()        }
+        when (item.itemId) {
+            R.id.share -> shareSuccess()
+        }
         return super.onOptionsItemSelected(item)
     }
 
